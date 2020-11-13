@@ -21,20 +21,10 @@ typedef struct ThreadBinaryTreeNode
 int main()
 {
 	void TestBinaryTree();
-	void InitThreadTree(ThreadBinaryTree & T);
-	void BuildThreadTree(ThreadBinaryTree & T);
-	void CreatInOrderThreadTree(ThreadBinaryTree & T);
-	void TraversalInOrder(const ThreadBinaryTree &T);
-	ThreadBinaryTreeNode *InOrderNextNode(ThreadBinaryTreeNode * t);
-	ThreadBinaryTreeNode *InOrderPreNode(ThreadBinaryTreeNode * t);
+	void TestThreadTree();
 
 	TestBinaryTree();
-
-	ThreadBinaryTree T;
-	InitThreadTree(T);
-	BuildThreadTree(T);
-	CreatInOrderThreadTree(T);
-	TraversalInOrder(T);
+	//TestThreadTree();
 	return 0;
 }
 
@@ -236,8 +226,8 @@ int TreeDeepth(const BinaryTree &T)
 
 void StupidInOrderThreadTree(const BinaryTreeNode *t, const BinaryTree &T)
 {
-	void StupidInOrderTreadTreePre(BinaryTreeNode * t, const BinaryTreeNode *&p, BinaryTreeNode *&currentNode, BinaryTreeNode *&preNode);
-	void StupidInOrderTreadTreeNext(BinaryTreeNode * t, const BinaryTreeNode *&p, BinaryTreeNode *&currentNode, BinaryTreeNode *&preNode);
+	void StupidInOrderTreadTreePre(BinaryTreeNode * t, const BinaryTreeNode *p, BinaryTreeNode *&currentNode, BinaryTreeNode *&preNode);
+	void StupidInOrderTreadTreeNext(BinaryTreeNode * t, const BinaryTreeNode *p, BinaryTreeNode *&currentNode, BinaryTreeNode *&preNode);
 
 	if (T == nullptr || t == nullptr)
 		return;
@@ -247,11 +237,11 @@ void StupidInOrderThreadTree(const BinaryTreeNode *t, const BinaryTree &T)
 	cout << t->data << " Pre is " << ((pre == nullptr) ? -1 : pre->data) << endl;
 
 	q = nullptr, pre = nullptr;
-	StupidInOrderTreadTreeNext(T, t, q, pre);
-	cout << t->data << " Next is " << ((q == nullptr) ? -1 : q->data) << endl;
+	StupidInOrderTreadTreeNext(T, t, pre, q);//pre 是q后继的后继
+	cout << t->data << " Next is " << ((q == nullptr) ? -1 : q->data);
 }
 
-void StupidInOrderTreadTreePre(BinaryTreeNode *t, const BinaryTreeNode *&p, BinaryTreeNode *&currentNode, BinaryTreeNode *&preNode)
+void StupidInOrderTreadTreePre(BinaryTreeNode *t, const BinaryTreeNode *p, BinaryTreeNode *&currentNode, BinaryTreeNode *&preNode)
 {
 	if (t != nullptr && preNode == nullptr)
 	{
@@ -265,17 +255,17 @@ void StupidInOrderTreadTreePre(BinaryTreeNode *t, const BinaryTreeNode *&p, Bina
 	}
 }
 
-void StupidInOrderTreadTreeNext(BinaryTreeNode *t, const BinaryTreeNode *&p, BinaryTreeNode *&currentNode, BinaryTreeNode *&preNode)
+void StupidInOrderTreadTreeNext(BinaryTreeNode *t, const BinaryTreeNode *p, BinaryTreeNode *&currentNode, BinaryTreeNode *&nextNode)
 {
-	if (t != nullptr && currentNode == nullptr)
+	if (t != nullptr && nextNode == nullptr)
 	{
-		StupidInOrderTreadTreeNext(t->leftChild, p, currentNode, preNode);
-		if (preNode == p)
+		StupidInOrderTreadTreeNext(t->leftChild, p, currentNode, nextNode);
+		if (currentNode == p)
 		{
-			currentNode = t;
+			nextNode = t;
 		}
-		preNode = t;
-		StupidInOrderTreadTreeNext(t->rightChild, p, currentNode, preNode);
+		currentNode = t;
+		StupidInOrderTreadTreeNext(t->rightChild, p, currentNode, nextNode);
 	}
 }
 
@@ -284,6 +274,22 @@ void StupidInOrderTreadTreeNext(BinaryTreeNode *t, const BinaryTreeNode *&p, Bin
 #pragma endregion OdinaryBinaryTree
 
 #pragma region ThreadBinaryTree
+void TestThreadTree()
+{
+	void TestBinaryTree();
+	void InitThreadTree(ThreadBinaryTree & T);
+	void BuildThreadTree(ThreadBinaryTree & T);
+	void CreatInOrderThreadTree(ThreadBinaryTree & T);
+	void TraversalInOrder(const ThreadBinaryTree &T);
+	ThreadBinaryTreeNode *InOrderNextNode(ThreadBinaryTreeNode * t);
+	ThreadBinaryTreeNode *InOrderPreNode(ThreadBinaryTreeNode * t);
+
+	ThreadBinaryTree T;
+	InitThreadTree(T);
+	BuildThreadTree(T);
+	CreatInOrderThreadTree(T);
+	TraversalInOrder(T);
+}
 
 void InitThreadTree(ThreadBinaryTree &T)
 {
