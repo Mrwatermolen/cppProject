@@ -23,11 +23,15 @@ int main()
 	void InitThreadTree(ThreadBinaryTree & T);
 	void BuildThreadTree(ThreadBinaryTree & T);
 	void CreatInOrderThreadTree(ThreadBinaryTree & T);
+	void TraversalInOrder(const ThreadBinaryTree &T);
+	ThreadBinaryTreeNode *InOrderNextNode(ThreadBinaryTreeNode * t);
+	ThreadBinaryTreeNode *InOrderPreNode(ThreadBinaryTreeNode * t);
 
 	ThreadBinaryTree T;
 	InitThreadTree(T);
 	BuildThreadTree(T);
 	CreatInOrderThreadTree(T);
+	TraversalInOrder(T);
 	return 0;
 }
 
@@ -395,6 +399,58 @@ void PostOrderThread(ThreadBinaryTreeNode *&t, ThreadBinaryTreeNode *&preNode)
 		}
 		preNode = t;
 	}
+}
+
+void TraversalInOrder(const ThreadBinaryTree &T)
+{
+	ThreadBinaryTreeNode *InOrderNextNode(ThreadBinaryTreeNode * t);
+	ThreadBinaryTreeNode *InOrderFirstNode(ThreadBinaryTreeNode * t);
+
+	cout << endl;
+	for (ThreadBinaryTreeNode *p = InOrderFirstNode(T); p != nullptr; p = InOrderNextNode(p))
+	{
+		cout << p->data;
+	}
+}
+
+ThreadBinaryTreeNode *InOrderPreNode(ThreadBinaryTreeNode *t)
+{
+	ThreadBinaryTreeNode *InOrderLastNode(ThreadBinaryTreeNode * t);
+
+	if (t->leftTag == 0)
+	{
+		return InOrderLastNode(t->leftChild);
+	}
+	return t->leftChild;
+}
+
+ThreadBinaryTreeNode *InOrderNextNode(ThreadBinaryTreeNode *t)
+{
+	ThreadBinaryTreeNode *InOrderFirstNode(ThreadBinaryTreeNode * t);
+
+	if (t->rightTag == 0)
+	{
+		return InOrderFirstNode(t->rightChild);
+	}
+	return t->rightChild;
+}
+
+ThreadBinaryTreeNode *InOrderFirstNode(ThreadBinaryTreeNode *t)
+{
+	while (t->leftTag == 0)
+	{
+		t = t->leftChild;
+	}
+	return t;
+}
+
+ThreadBinaryTreeNode *InOrderLastNode(ThreadBinaryTreeNode *t)
+{
+	while (t->rightTag == 0)
+	{
+		t = t->rightChild;
+	}
+	return t;
 }
 
 #pragma endregion ThreadBinaryTree
