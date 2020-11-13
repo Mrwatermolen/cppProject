@@ -20,12 +20,15 @@ typedef struct ThreadBinaryTreeNode
 
 int main()
 {
+	void TestBinaryTree();
 	void InitThreadTree(ThreadBinaryTree & T);
 	void BuildThreadTree(ThreadBinaryTree & T);
 	void CreatInOrderThreadTree(ThreadBinaryTree & T);
 	void TraversalInOrder(const ThreadBinaryTree &T);
 	ThreadBinaryTreeNode *InOrderNextNode(ThreadBinaryTreeNode * t);
 	ThreadBinaryTreeNode *InOrderPreNode(ThreadBinaryTreeNode * t);
+
+	TestBinaryTree();
 
 	ThreadBinaryTree T;
 	InitThreadTree(T);
@@ -108,6 +111,7 @@ void TestBinaryTree()
 	void InOrder(BinaryTree t);
 	void PostOrder(BinaryTree t);
 	void LevelOrder(const BinaryTree &t);
+	int TreeDeepth(const BinaryTree &T);
 	void StupidInOrderThreadTree(const BinaryTreeNode *t, const BinaryTree &T);
 
 	BinaryTree t;
@@ -123,7 +127,7 @@ void TestBinaryTree()
 	cout << endl;
 	LevelOrder(t);
 	cout << endl;
-
+	cout << "Tree Deepth " << TreeDeepth(t);
 	cout << endl;
 	StupidInOrderThreadTree(t, t);
 	cout << endl;
@@ -217,6 +221,15 @@ void LevelOrder(const BinaryTree &t)
 		EnLinkQueue(Q, e->leftChild);
 		EnLinkQueue(Q, e->rightChild);
 	}
+}
+
+int TreeDeepth(const BinaryTree &T)
+{
+	if (T == nullptr)
+		return 0;
+	int l = TreeDeepth(T->leftChild);
+	int r = TreeDeepth(T->rightChild);
+	return (l > r) ? (l + 1) : (r + 1);
 }
 
 #pragma region StupidInOrderThreadTree
