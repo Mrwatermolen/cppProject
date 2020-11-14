@@ -8,11 +8,27 @@ typedef struct BSTNode
 
 int main()
 {
+    bool CreatBSTNode(BSTree & T, double sq[], int n);
+    BSTNode *BSTSearch(BSTree T, double key);
+    bool BSTInsert(BSTree &T, double key);
+    bool BSTDelete(BSTree &T, double key);
+
+    BSTree T;
+    double sq[9] = {8, 3, 10, 1, 6, 4, 7, 14, 13};
+    CreatBSTNode(T, sq, 9);
+    //BSTDelete(T,13);
+    //BSTInsert(T,13);
+    //BSTDelete(T,10);
+    BSTDelete(T,3);
+
+
     return 0;
 }
 
 bool CreatBSTNode(BSTree &T, double sq[], int n)
 {
+    bool BSTInsert(BSTree & T, double key);
+
     T = nullptr;
     for (int i = 0; i < n; ++i)
     {
@@ -58,32 +74,43 @@ bool BSTInsert(BSTree &T, double key)
             return false;
         if (key < p->key)
         {
+            if (p->leftChild == nullptr)
+            {
+                p->leftChild = new BSTNode; //一定要先申请空间!因为left一定是nullptr 给p赋值后 p就不是T的结点了
+                p = p->leftChild;
+                break;
+            }
             p = p->leftChild;
         }
         else
         {
+            if (p->rightChild == nullptr)
+            {
+                p->rightChild = new BSTNode;
+                p = p->rightChild;
+                break;
+            }
             p = p->rightChild;
         }
     }
-    p = new BSTNode;
     p->key = key;
     p->leftChild = p->rightChild = nullptr;
     return true;
 }
 
-bool BSTDelete(BSTree &T, double key, double &e)
+//因为没有用ParentsTree 所以比较麻烦
+bool BSTDelete(BSTree &T, double key)
 {
     BSTNode *BSTSearch(BSTree T, double key);
-    void StupidInOrderTreePre(BSTNode * t, const BSTNode *p, BSTNode *currentNode, BSTNode *&preNode);
-    void StupidInOrderTreeNext(BSTNode * t, const BSTNode *p, BSTNode *currentNode, BSTNode *&nextNode);
+    void StupidInOrderTreePre(BSTNode * t, const BSTNode *p, BSTNode *&currentNode, BSTNode *&preNode);
+    void StupidInOrderTreeNext(BSTNode * t, const BSTNode *p, BSTNode *&currentNode, BSTNode *&nextNode);
 
     BSTNode *p = BSTSearch(T, key);
     if (p == nullptr)
         return false;
     if (p->leftChild == nullptr && p->rightChild == nullptr)
     {
-        e = key;
-        delete p; //??前驱会指向野指针吗
+        delete p; //??前驱会指向野指针吗 结论是会...
         return true;
     }
     if (p->leftChild != nullptr && p->rightChild != nullptr)
@@ -127,6 +154,7 @@ bool BSTDelete(BSTree &T, double key, double &e)
         delete p;
         return true;
     }
+    return false;
 }
 
 void StupidInOrderTreePre(BSTNode *t, const BSTNode *p, BSTNode *&currentNode, BSTNode *&preNode)
@@ -145,7 +173,7 @@ void StupidInOrderTreePre(BSTNode *t, const BSTNode *p, BSTNode *&currentNode, B
 
 void StupidInOrderTreeNext(BSTNode *t, const BSTNode *p, BSTNode *&currentNode, BSTNode *&nextNode)
 {
-    if (t != nullptr && currentNode == nullptr)
+    if (t != nullptr && nextNode == nullptr)
     {
         StupidInOrderTreeNext(t->leftChild, p, currentNode, nextNode);
         if (currentNode == p)
