@@ -98,7 +98,7 @@ bool BSTInsert(BSTree &T, double key)
     return true;
 }
 
-//因为没有用ParentsTree 所以比较麻烦
+//因为没有用ParentsTree 所以比较麻烦 完败
 bool BSTDelete(BSTree &T, double key)
 {
     BSTNode *BSTSearch(BSTree T, double key);
