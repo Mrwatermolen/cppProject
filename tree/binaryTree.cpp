@@ -88,6 +88,7 @@ bool DeLinkQueue(LinkQueue *Q, BinaryTreeNode *&e)
 	delete p;
 	return true;
 }
+
 #pragma endregion LinkQueue
 
 #pragma region OdinaryBinaryTree

@@ -1,12 +1,153 @@
 #include <iostream>
 
+using namespace std;
+
 typedef struct BBTNode
 {
     double key;
     BBTNode *leftChild, *rightChild, *father;
 } * BBTree;
 
-bool BBTInsert(BBTree &T, double key)
+int main()
+{
+    void BBTInsert(BBTree & T, double key);
+    void InOrder(BBTree t);
+    void LevelOrder(const BBTree &T);
+
+    BBTree T;
+    double sq[15] = {100, 50, 500, 25, 75, 350, 1000, 1, 30, 65, 80, 300, 400, 900, 1500};
+    for (int i = 0; i < 15; ++i)
+    {
+        BBTInsert(T, sq[i]);
+    }
+    cout << endl;
+    InOrder(T);
+    cout << endl;
+    LevelOrder(T);
+
+    /* //LL p->rightChild = nullptr
+    BBTInsert(T, 0.1);
+    BBTInsert(T, 0.01); */
+    /* //LL
+    BBTInsert(T, 60);
+    BBTInsert(T, 68);
+    BBTInsert(T, 53); */
+    /* //LR p->leftChild = nullptr
+    BBTInsert(T, 60);
+    BBTInsert(T, 63); */
+    /* //LR
+    BBTInsert(T, 60);
+    BBTInsert(T, 68);
+    BBTInsert(T, 67); */
+    
+    /* BBTree TT = nullptr;
+    double sqq[5] = {5, 4, 6, 2, 3};
+    for (int i = 0; i < 5; ++i)
+    {
+        BBTInsert(TT, sqq[i]);
+    }
+    cout << endl;
+    InOrder(TT);
+    cout << endl;
+    LevelOrder(TT);
+    //root is unbalance
+    BBTInsert(TT, 1);
+    cout << endl;
+    InOrder(TT);
+    cout << endl;
+    LevelOrder(TT); */
+    return 0;
+}
+
+void InOrder(BBTree t)
+{
+    if (t != nullptr)
+    {
+        InOrder(t->leftChild);
+        cout << t->key << "->";
+        InOrder(t->rightChild);
+    }
+}
+
+#pragma region LinkQueue
+
+struct LinkNode
+{
+    BBTNode *t;
+    LinkNode *next;
+};
+
+struct LinkQueue
+{
+    LinkNode *font, *rear;
+};
+
+void InitLinkQueue(LinkQueue *Q)
+{
+    //Q = new LinkQueue;
+    Q->font = nullptr;
+    Q->rear = nullptr;
+}
+
+bool LinkQueueEmpty(const LinkQueue *Q)
+{
+    return Q->font == nullptr;
+}
+
+bool EnLinkQueue(LinkQueue *Q, BBTNode *t)
+{
+    LinkNode *p = new LinkNode;
+    if (p == nullptr || t == nullptr)
+        return false;
+    p->next = nullptr;
+    p->t = t;
+    if (LinkQueueEmpty(Q))
+    {
+        Q->font = p;
+        Q->rear = p;
+    }
+    else
+    {
+        Q->rear->next = p;
+        Q->rear = p;
+    }
+    return true;
+}
+
+bool DeLinkQueue(LinkQueue *Q, BBTNode *&e)
+{
+    if (LinkQueueEmpty(Q))
+        return false;
+    LinkNode *p = Q->font;
+    Q->font = p->next;
+    e = p->t;
+    if (Q->rear == p)
+    {
+        Q->font = nullptr;
+        Q->rear = nullptr;
+    }
+    delete p;
+    return true;
+}
+
+#pragma endregion LinkQueue
+
+void LevelOrder(const BBTree &T)
+{
+    LinkQueue *Q = new LinkQueue;
+    InitLinkQueue(Q);
+    EnLinkQueue(Q, T);
+    while (!LinkQueueEmpty(Q))
+    {
+        BBTNode *e;
+        DeLinkQueue(Q, e);
+        cout << e->key << "->";
+        EnLinkQueue(Q, e->leftChild);
+        EnLinkQueue(Q, e->rightChild);
+    }
+}
+
+void BBTInsert(BBTree &T, double key)
 {
     BBTNode *BBTSearch(BBTree T, double key);
     void Rebalance(BBTNode * t, BBTree & T);
@@ -17,7 +158,8 @@ bool BBTInsert(BBTree &T, double key)
         T->key = key;
         T->leftChild = T->rightChild = T->father = nullptr;
         //T->height = 1;
-        return true;
+        Rebalance(T, T);
+        return;
     }
     else
     {
@@ -25,7 +167,7 @@ bool BBTInsert(BBTree &T, double key)
         while (p != nullptr)
         {
             if (key == p->key)
-                return false;
+                return;
             if (key < p->key)
             {
                 if (p->leftChild == nullptr)
@@ -53,8 +195,9 @@ bool BBTInsert(BBTree &T, double key)
         }
         p->key = key;
         p->leftChild = p->rightChild = nullptr;
+        Rebalance(p, T);
+        return;
     }
-    Rebalance(T, T);
 }
 
 BBTNode *BBTSearch(BBTree T, double key)
@@ -139,7 +282,10 @@ void LeftRotate(BBTNode *t, BBTree &T)
     //左旋 考虑根结点
     BBTNode *p = t->rightChild;
     t->rightChild = p->leftChild;
-    p->leftChild->father = t;
+    if (p->leftChild != nullptr)
+    {
+        p->leftChild->father = t;
+    }
     p->leftChild = t;
     if (t == T)
     {
@@ -169,7 +315,10 @@ void RightRotate(BBTNode *t, BBTree &T)
     //右旋 考虑根结点
     BBTNode *p = t->leftChild;
     t->leftChild = p->rightChild;
-    p->rightChild->father = t;
+    if (p->rightChild != nullptr)
+    {
+        p->rightChild->father = t;
+    }
     p->rightChild = t;
     if (t == T)
     {
