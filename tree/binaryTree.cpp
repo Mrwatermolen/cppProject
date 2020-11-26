@@ -110,12 +110,16 @@ void TestBinaryTree()
 	BuildBinaryTree(t);
 	cout << endl;
 
+	cout << "PreOrder ";
 	PreOrder(t);
 	cout << endl;
+	cout << "InOrder ";
 	InOrder(t);
 	cout << endl;
+	cout << "PostOrder ";
 	PostOrder(t);
 	cout << endl;
+	cout << "LevelOrder ";
 	LevelOrder(t);
 	cout << endl;
 	cout << "Tree Deepth " << TreeDeepth(t);
