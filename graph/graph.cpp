@@ -96,8 +96,8 @@ void BSF(G, x)
 {
     visit(G, x);
     G.visited[x] = true;
-    Enqueue(Q, x);
-    x入队 while (!isEmpty(Q))
+    Enqueue(Q, x); //x入队
+    while (!isEmpty(Q))
     {
         DeQueue(Q, x, e); //e可有可无
         for (w = FirstNeighbor(G, x); w >= 0; w = NextNeighbor(G, v, w))
