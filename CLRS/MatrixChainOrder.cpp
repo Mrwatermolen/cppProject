@@ -43,19 +43,25 @@ void ExtendedBottomUpMCO(int *p, int **m, int **s, int n)
     }
 }
 
-void PrintOptionParens(int **s, int i, int j)
+void PrintOptimalParens(int **s, int i, int j)
 {
     if (i == j)
         cout << i;
     else
     {
         cout<<"(";
-        PrintOptionParens(s,i,s[i][j]);
-        PrintOptionParens(s,s[i][j]+1,j);
+        PrintOptimalParens(s,i,s[i][j]);
+        PrintOptimalParens(s,s[i][j]+1,j);
         cout<<")";
     }
 }
 
+int MatrixChainOrder(int *p, int **m, int **s, int i, int j)
+{
+    if(m[i][j] >= 0)
+        return m[i][j];
+    int q = INT32_MAX;
+}
 int main()
 {
     int p[7]={30,35,15,5,10,20,25}, n = 6;
@@ -66,6 +72,6 @@ int main()
         m[i] = new int[n+1];
     }
     ExtendedBottomUpMCO(p,m,s,n);
-    PrintOptionParens(s,1,n);
+    PrintOptimalParens(s,1,n);
     cout<<'\n'<<m[1][n];
 }
