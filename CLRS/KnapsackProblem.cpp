@@ -48,13 +48,38 @@ double FractionalKnapsack(double C, vector<Object> &o)
     return res;
 }
 
+int ZeroOneKnapsack(int C, vector<Object> &o)
+{
+    if (C <= 0)
+        return 0;
+    int **p = new int *[C + 1];
+    for (int i = 0; i <= C; ++i)
+    {
+        p[i] = new int[o.size() + 1];
+        for (int j = 0; j <= o.size(); ++j)
+            p[i][j] = 0;
+    }
+    for (int i = 1; i <= C; ++i)
+    {
+        for (int j = 1; j <= o.size(); ++j)
+        {
+            if (i >= o[j].weight)
+                p[i][j] = max(p[i - (int)o[j].weight][j - 1] + (int)o[j].value, p[i][j - 1]);
+            else
+                p[i][j] = p[i][j - 1];
+        }
+    }
+    return p[C][o.size()];
+}
+
 int main()
 {
     vector<Object> o;
     o.push_back(Object(1, 5));
     o.push_back(Object(3, 6));
     o.push_back(Object(6, 6));
-    o.push_back(Object(1.5, 6));
+    o.push_back(Object(2, 9));
     o.push_back(Object(4, 12));
     cout << FractionalKnapsack(10, o) << endl;
+    cout << ZeroOneKnapsack(10, o) << endl;
 }
