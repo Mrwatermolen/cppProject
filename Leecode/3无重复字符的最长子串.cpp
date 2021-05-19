@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 using namespace std;
 
 /*给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。*/
@@ -17,10 +18,7 @@ public:
             for (; j >= i - dp[i - 1]; --j)
             {
                 if (s[i] == s[j])
-                {
-
                     break;
-                }
             }
             dp[i] = i - j;
             ans = max(ans, dp[i]);
