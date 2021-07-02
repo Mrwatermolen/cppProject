@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <iostream>
 
 void InsertSort(int array[], int len)
 {
@@ -60,9 +60,9 @@ void ShellInsert(int array[], int len, int d)
     {
         if (array[i] < array[i - d])
         {
-            array[0] = array[i - d];
+            array[0] = array[i];
             int j = i - d;
-            for (; j > 0 && array[j] < array[0]; j -= d) //这个大于0很重要，因为[0]已经不是哨兵了
+            for (; j > 0 && array[j] > array[0]; j -= d) //这个大于0很重要，因为[0]已经不是哨兵了
             {
                 array[j + d] = array[j];
             }
@@ -71,11 +71,11 @@ void ShellInsert(int array[], int len, int d)
     }
 }
 
-void Swap(int *a, int *b)
+void Swap(int &a, int &b)
 {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+    int temp = a;
+    a = b;
+    b = temp;
 }
 void BubbleSort(int array[], int len)
 {
@@ -85,7 +85,7 @@ void BubbleSort(int array[], int len)
         {
             if (array[j] > array[j + 1])
             {
-                Swap(&array[j], &array[j + 1]);
+                Swap(array[j], array[j + 1]);
             }
         }
     }
@@ -111,20 +111,20 @@ int Partiton(int array[], int low, int high)
         {
             --high;
         }
-        //Swap(&array[high],&array[low]);
+        //Swap(array[high],array[low]);
         array[low] = array[high]; //不用交换是因为第一次交换时low就是privot的位置这个位子本来就能被代替，没代替一次就产生一个废位子
         while (low < high && array[low] <= privot)
         {
             ++low;
         }
-        //Swap(&array[high],&array[low]);
+        //Swap(array[high],array[low]);
         array[high] = array[low];
     }
     array[low] = privot; //没有使用交换记得最后把privot移回去
     return low;
 }
 
-void SelcetSort(int array[], int len)
+void SelectSort(int array[], int len)
 {
     for (int i = 1; i < len; ++i)
     {
@@ -138,7 +138,7 @@ void SelcetSort(int array[], int len)
         }
         if (min != i)
         {
-            Swap(array + i, array + min);
+            Swap(array[i], array[min]);
         }
     }
 }
@@ -152,7 +152,7 @@ void HeapSort(int array[], int len)
     }
     for (int i = 1; i < len; ++i)
     {
-        Swap(array + 1, array + len - i + 1);
+        Swap(array[1], array[len - i + 1]);
         HeadAdjust(array, len - i, 1);
     }
 }
@@ -166,7 +166,7 @@ void HeadAdjust(int array[], int len, int k)
             ++son;
         if (array[son] < array[k])
             return;
-        Swap(array + son, array + k);
+        Swap(array[son], array[k]);
         k = son;
         son = 2 * k;
     }
@@ -176,10 +176,4 @@ int main()
 {
     int arr[] = {9999, 3, 5, 3, 0, 8, 6, 1, 5, 8, 6, 2, 4, 9, 4, 7, 0, 1, 8, 9, 7, 3, 1, 2, 5, 9, 7, 4, 0, 2, 6};
     int len = sizeof(arr) / sizeof(int) - 1;
-    BubbleSort(arr, len);
-    for (int i = 1; i <= len; ++i)
-    {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
 }
